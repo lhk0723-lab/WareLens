@@ -20,25 +20,20 @@ public class RecommendationController {
 
     @PostMapping("/upload")
     public Map<String, Object> uploadFile(@ModelAttribute UploadRequestDto requestDto) {
-        
-        // [검증] 라벨링 가이드에 따른 스타일 유효성 체크
-        List<String> validStyles = Arrays.asList("스트릿", "댄디", "고프코어", "미니멀");
-        if (!validStyles.contains(requestDto.getStyle())) {
-            return Map.of("status", "fail", "message", "지원하지 않는 스타일입니다.");
-        }
-
         try {
-            // [연동] 서비스 로직 위임
+            // 리액트가 보낸 데이터가 자바에 잘 들어왔는지 콘솔에 먼저 찍어보는 로그
+            System.out.println("받은 의류 사진 개수: " + (requestDto.getClothingImages() != null ? requestDto.getClothingImages().size() : 0));
+            System.out.println("받은 신체 정보 JSON: " + requestDto.getUserInfo());
+
+            // [연동] 서비스 로직으로 데이터 위임
             Map<String, Object> result = recommendationService.processRecommendation(requestDto);
             
-            // [응답 가공] 프론트엔드 표준 포맷 래핑
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.putAll(result);
             return response;
             
         } catch (Exception e) {
-            // [예외 처리] 서버 장애 방지 및 에러 클라이언트 전달
             return Map.of("status", "fail", "error", e.getMessage());
         }
     }

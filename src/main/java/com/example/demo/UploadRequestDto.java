@@ -1,23 +1,41 @@
 package com.example.demo;
 
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 /**
- * [역할: 데이터 전송 객체 (DTO)]
- * - 클라이언트(React)와 서버 간의 데이터 규격 정의
+ * [역할: 프론트엔드 요청 데이터 바구니]
+ * - 리액트 UploadPage.tsx에서 FormData로 보내는 Key 이름과 1:1 매칭 필수
  */
-
-//프론트엔드 데이터이름, FastAPI 가 요구하는 이름 변경시 수정
 public class UploadRequestDto {
-    private MultipartFile file;  // 업로드 이미지,  "옷 사진"을 전송하는 Key 이름이 file 에서 변경 시 수정
-    private String gender;       // 성별 정보
-    private String style;        // 스타일 태그
+    
+    private List<MultipartFile> clothingImages; // 리액트의 clothingImages (최대 5장)
+    private MultipartFile fullBodyImage;        // 리액트의 fullBodyImage (전신 사진 1장)
+    private String userInfo;                    // 리액트의 userInfo (키, 몸무게, 성별 JSON 문자열)
 
-    // [데이터 바인딩] Getter/Setter
-    public MultipartFile getFile() { return file; }
-    public void setFile(MultipartFile file) { this.file = file; }
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
-    public String getStyle() { return style; }
-    public void setStyle(String style) { this.style = style; }
+    // === 데이터 바인딩을 위한 Getter / Setter 세트 ===
+
+    public List<MultipartFile> getClothingImages() { 
+        return clothingImages; 
+    }
+    
+    public void setClothingImages(List<MultipartFile> clothingImages) { 
+        this.clothingImages = clothingImages; 
+    }
+
+    public MultipartFile getFullBodyImage() { 
+        return fullBodyImage; 
+    }
+    
+    public void setFullBodyImage(MultipartFile fullBodyImage) { 
+        this.fullBodyImage = fullBodyImage; 
+    }
+
+    public String getUserInfo() { 
+        return userInfo; 
+    }
+    
+    public void setUserInfo(String userInfo) { 
+        this.userInfo = userInfo; 
+    }
 }
